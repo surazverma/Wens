@@ -4,8 +4,9 @@ import androidx.lifecycle.LiveData
 import com.example.wens.model.objects.Articles
 import com.example.wens.model.responses.BaseListResponse
 import com.example.wens.status.Resource
+import javax.inject.Inject
 
-interface IWensRepository {
+interface IWensDataSource {
 
     fun getTopHeadlinesFromCountry(country: String): LiveData<Resource<BaseListResponse<Articles>>>
 

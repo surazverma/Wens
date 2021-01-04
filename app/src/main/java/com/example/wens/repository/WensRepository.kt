@@ -3,49 +3,49 @@ package com.example.wens.repository
 import androidx.lifecycle.LiveData
 import com.example.wens.model.objects.Articles
 import com.example.wens.model.responses.BaseListResponse
-import com.example.wens.operation.remote.WensNetworkOperation
+import com.example.wens.operation.remote.WensRemoteOperation
 import com.example.wens.status.Resource
 
-class WensRepository:IWensRepository {
-    val mWensNetworkOperation = WensNetworkOperation
+class WensRepository(private val wensRemoteSource: IWensDataSource) {
 
-    override fun getTopHeadlinesFromCountry(country: String): LiveData<Resource<BaseListResponse<Articles>>> {
-        return mWensNetworkOperation.getTopHeadlinesFromCountry(country)
+
+    fun getTopHeadlinesFromCountry(country: String): LiveData<Resource<BaseListResponse<Articles>>> {
+        return wensRemoteSource.getTopHeadlinesFromCountry(country)
     }
 
-    override fun getTopHeadlinesFromSources(sources: String): LiveData<Resource<BaseListResponse<Articles>>> {
-        return mWensNetworkOperation.getTopHeadlinesFromSources(sources)
+    fun getTopHeadlinesFromSources(sources: String): LiveData<Resource<BaseListResponse<Articles>>> {
+        return wensRemoteSource.getTopHeadlinesFromSources(sources)
     }
 
-    override fun getTopHeadlinesFromCategory(category: String): LiveData<Resource<BaseListResponse<Articles>>> {
-        return mWensNetworkOperation.getTopHeadlinesFromCategory(category)
+    fun getTopHeadlinesFromCategory(category: String): LiveData<Resource<BaseListResponse<Articles>>> {
+        return wensRemoteSource.getTopHeadlinesFromCategory(category)
     }
 
-    override fun getTopHeadlinesFromCategoryInCountry(
+    fun getTopHeadlinesFromCategoryInCountry(
         category: String,
         country: String
     ): LiveData<Resource<BaseListResponse<Articles>>> {
-        return mWensNetworkOperation.getTopHeadlinesFromCategoryInCountry(category, country)
+        return wensRemoteSource.getTopHeadlinesFromCategoryInCountry(category, country)
     }
 
-    override fun getTopHeadlinesFromQuery(query: String): LiveData<Resource<BaseListResponse<Articles>>> {
-        return mWensNetworkOperation.getTopHeadlinesFromQuery(query)
+    fun getTopHeadlinesFromQuery(query: String): LiveData<Resource<BaseListResponse<Articles>>> {
+        return wensRemoteSource.getTopHeadlinesFromQuery(query)
     }
 
-    override fun getEverythingFromQuery(query: String): LiveData<Resource<BaseListResponse<Articles>>> {
-        return mWensNetworkOperation.getEverythingFromQuery(query)
+    fun getEverythingFromQuery(query: String): LiveData<Resource<BaseListResponse<Articles>>> {
+        return wensRemoteSource.getEverythingFromQuery(query)
     }
 
-    override fun getEverythingFromQueryInTitle(qInTitle: String): LiveData<Resource<BaseListResponse<Articles>>> {
-        return mWensNetworkOperation.getEverythingFromQueryInTitle(qInTitle)
+    fun getEverythingFromQueryInTitle(qInTitle: String): LiveData<Resource<BaseListResponse<Articles>>> {
+        return wensRemoteSource.getEverythingFromQueryInTitle(qInTitle)
     }
 
-    override fun getEverythingFromQueryAndDate(
+    fun getEverythingFromQueryAndDate(
         q: String,
         from: String,
         to: String,
         sortBy: String
     ): LiveData<Resource<BaseListResponse<Articles>>> {
-        return mWensNetworkOperation.getEverythingFromByQueryAndDate(q, from, to, sortBy)
+        return wensRemoteSource.getEverythingFromQueryAndDate(q, from, to, sortBy)
     }
 }

@@ -3,6 +3,9 @@ plugins {
     id 'kotlin-android'
 }
 
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
 def personalPropertiesFile = rootProject.file("personal.properties")
 def personalProperties = new Properties()
 personalProperties.load(new FileInputStream(personalPropertiesFile))
@@ -20,8 +23,8 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField("String","API_KEY", personalProperties['API_KEY'])
-        buildConfigField("String","BASE_URL",personalProperties['BASE_URL'])
+        buildConfigField("String", "API_KEY", personalProperties['API_KEY'])
+        buildConfigField("String", "BASE_URL", personalProperties['BASE_URL'])
     }
 
     buildTypes {
@@ -61,4 +64,10 @@ dependencies {
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+
+    //DI - Dagger
+    def dagger_version = "2.28.3"
+    implementation "com.google.dagger:dagger:$dagger_version"
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
 }

@@ -6,6 +6,7 @@ import com.example.wens.BuildConfig
 import com.example.wens.model.objects.Articles
 import com.example.wens.model.objects.Sources
 import com.example.wens.model.responses.BaseListResponse
+import com.example.wens.repository.IWensDataSource
 import com.example.wens.retrofit.WensAPIClient
 import com.example.wens.status.Resource
 import retrofit2.Call
@@ -13,10 +14,10 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-object WensNetworkOperation {
+object WensRemoteOperation : IWensDataSource {
     val apiKey = BuildConfig.API_KEY
 
-    fun getTopHeadlinesFromCountry(country: String): LiveData<Resource<BaseListResponse<Articles>>> {
+    override fun getTopHeadlinesFromCountry(country: String): LiveData<Resource<BaseListResponse<Articles>>> {
         val mldData = MutableLiveData<Resource<BaseListResponse<Articles>>>()
         mldData.value = Resource.Loading()
 
@@ -42,7 +43,7 @@ object WensNetworkOperation {
         return mldData
     }
 
-    fun getTopHeadlinesFromSources(sources: String): LiveData<Resource<BaseListResponse<Articles>>> {
+    override fun getTopHeadlinesFromSources(sources: String): LiveData<Resource<BaseListResponse<Articles>>> {
         val mldData = MutableLiveData<Resource<BaseListResponse<Articles>>>()
         mldData.value = Resource.Loading()
 
@@ -68,7 +69,7 @@ object WensNetworkOperation {
         return mldData
     }
 
-    fun getTopHeadlinesFromCategory(category: String): LiveData<Resource<BaseListResponse<Articles>>> {
+    override fun getTopHeadlinesFromCategory(category: String): LiveData<Resource<BaseListResponse<Articles>>> {
         val mldData = MutableLiveData<Resource<BaseListResponse<Articles>>>()
         mldData.value = Resource.Loading()
 
@@ -95,7 +96,7 @@ object WensNetworkOperation {
     }
 
 
-    fun getTopHeadlinesFromCategoryInCountry(
+    override fun getTopHeadlinesFromCategoryInCountry(
         category: String,
         country: String
     ): LiveData<Resource<BaseListResponse<Articles>>> {
@@ -125,7 +126,7 @@ object WensNetworkOperation {
         return mldData
     }
 
-    fun getTopHeadlinesFromQuery(query: String): LiveData<Resource<BaseListResponse<Articles>>> {
+    override fun getTopHeadlinesFromQuery(query: String): LiveData<Resource<BaseListResponse<Articles>>> {
         val mldData = MutableLiveData<Resource<BaseListResponse<Articles>>>()
         mldData.value = Resource.Loading()
 
@@ -151,7 +152,7 @@ object WensNetworkOperation {
         return mldData
     }
 
-    fun getEverythingFromQuery(query: String): LiveData<Resource<BaseListResponse<Articles>>> {
+    override fun getEverythingFromQuery(query: String): LiveData<Resource<BaseListResponse<Articles>>> {
         val mldData = MutableLiveData<Resource<BaseListResponse<Articles>>>()
         mldData.value = Resource.Loading()
 
@@ -177,7 +178,7 @@ object WensNetworkOperation {
         return mldData
     }
 
-    fun getEverythingFromQueryInTitle(queryInTitle: String): MutableLiveData<Resource<BaseListResponse<Articles>>> {
+    override fun getEverythingFromQueryInTitle(queryInTitle: String): MutableLiveData<Resource<BaseListResponse<Articles>>> {
         val mldData = MutableLiveData<Resource<BaseListResponse<Articles>>>()
         mldData.value = Resource.Loading()
 
@@ -203,8 +204,8 @@ object WensNetworkOperation {
         return mldData
     }
 
-    fun getEverythingFromByQueryAndDate(
-        query: String,
+    override fun getEverythingFromQueryAndDate(
+        q: String,
         from: String,
         to: String,
         sortBy: String
@@ -213,7 +214,7 @@ object WensNetworkOperation {
         mldData.value = Resource.Loading()
 
         val call =
-            WensAPIClient.getClient().getEverythingByQueryAndDate(query, from, to, sortBy, apiKey)
+            WensAPIClient.getClient().getEverythingByQueryAndDate(q, from, to, sortBy, apiKey)
         call.enqueue(object : Callback<BaseListResponse<Articles>> {
 
             override fun onFailure(call: Call<BaseListResponse<Articles>>, t: Throwable) {
