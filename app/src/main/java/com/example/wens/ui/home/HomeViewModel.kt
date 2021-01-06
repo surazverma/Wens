@@ -16,11 +16,6 @@ import kotlinx.coroutines.withContext
 
 class HomeViewModel constructor(val wensRepository: WensRepository) : ViewModel() {
 
-
-//    fun getTopHeadlinesFromCountry(country: String): LiveData<Resource<BaseListResponse<Articles>>> {
-//        return wensRepository.getTopHeadlinesFromCountry(country)
-//    }
-
     val news = MutableLiveData<Resource<List<Articles>>>()
 
     fun getTopHeadlinesFromC(country: String) {

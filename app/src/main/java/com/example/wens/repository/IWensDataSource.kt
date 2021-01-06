@@ -1,6 +1,5 @@
 package com.example.wens.repository
 
-import androidx.lifecycle.LiveData
 import com.example.wens.model.objects.Articles
 import com.example.wens.model.responses.BaseListResponse
 import com.example.wens.status.Resource
@@ -10,25 +9,25 @@ interface IWensDataSource {
 
     suspend fun getTopHeadlinesFromCountry(country: String): Resource<BaseListResponse<Articles>>
 
-    fun getTopHeadlinesFromSources(sources: String): LiveData<Resource<BaseListResponse<Articles>>>
+    suspend fun getTopHeadlinesFromSources(sources: String): Resource<BaseListResponse<Articles>>
 
-    fun getTopHeadlinesFromCategory(category: String): LiveData<Resource<BaseListResponse<Articles>>>
+    suspend fun getTopHeadlinesFromCategory(category: String): Resource<BaseListResponse<Articles>>
 
-    fun getTopHeadlinesFromCategoryInCountry(
+    suspend fun getTopHeadlinesFromCategoryInCountry(
         category: String,
         country: String
-    ): LiveData<Resource<BaseListResponse<Articles>>>
+    ): Resource<BaseListResponse<Articles>>
 
-    fun getTopHeadlinesFromQuery(query: String): LiveData<Resource<BaseListResponse<Articles>>>
+    suspend fun getTopHeadlinesFromQuery(query: String): Resource<BaseListResponse<Articles>>
 
-    fun getEverythingFromQuery(query: String): LiveData<Resource<BaseListResponse<Articles>>>
+    suspend fun getEverythingFromQuery(query: String): Resource<BaseListResponse<Articles>>
 
-    fun getEverythingFromQueryInTitle(qInTitle: String): LiveData<Resource<BaseListResponse<Articles>>>
+    suspend fun getEverythingFromQueryInTitle(qInTitle: String): Resource<BaseListResponse<Articles>>
 
-    fun getEverythingFromQueryAndDate(
+    suspend fun getEverythingFromQueryAndDate(
         q: String,
         from: String,
         to: String,
         sortBy: String
-    ): LiveData<Resource<BaseListResponse<Articles>>>
+    ): Resource<BaseListResponse<Articles>>
 }

@@ -14,209 +14,63 @@ import retrofit2.Response
 
 
 object WensRemoteOperation : IWensDataSource {
-    val apiKey = "a68be71781264398a4061a468f462fc9"
+    val apiKey = BuildConfig.API_KEY
 
     override suspend fun getTopHeadlinesFromCountry(country: String): Resource<BaseListResponse<Articles>> {
         val response =  WensAPIClient.getClient().getTopHeadlinesFromCountry(country, apiKey)
-        return if (response.isSuccessful){
-            Resource.Success(response.body()!!)
-        }else{
-            Resource.Error(response.message())
-        }
+        return setResourceAccordingToResponse(response)
     }
 
-    override fun getTopHeadlinesFromSources(sources: String): LiveData<Resource<BaseListResponse<Articles>>> {
-        val mldData = MutableLiveData<Resource<BaseListResponse<Articles>>>()
-        mldData.value = Resource.Loading()
-
-        val call = WensAPIClient.getClient().getTopHeadLinesFromSources(sources, apiKey)
-        call.enqueue(object : Callback<BaseListResponse<Articles>> {
-
-            override fun onFailure(call: Call<BaseListResponse<Articles>>, t: Throwable) {
-                mldData.value = Resource.Error()
-            }
-
-            override fun onResponse(
-                call: Call<BaseListResponse<Articles>>,
-                response: Response<BaseListResponse<Articles>>
-            ) {
-                if (response.isSuccessful) {
-                    mldData.value = Resource.Success(response.body()!!)
-                } else {
-                    mldData.value = Resource.Error(response.body()?.message ?: response.message())
-                }
-            }
-        })
-
-        return mldData
-    }
-
-    override fun getTopHeadlinesFromCategory(category: String): LiveData<Resource<BaseListResponse<Articles>>> {
-        val mldData = MutableLiveData<Resource<BaseListResponse<Articles>>>()
-        mldData.value = Resource.Loading()
-
-        val call = WensAPIClient.getClient().getTopHeadLinesFromSources(category, apiKey)
-        call.enqueue(object : Callback<BaseListResponse<Articles>> {
-
-            override fun onFailure(call: Call<BaseListResponse<Articles>>, t: Throwable) {
-                mldData.value = Resource.Error()
-            }
-
-            override fun onResponse(
-                call: Call<BaseListResponse<Articles>>,
-                response: Response<BaseListResponse<Articles>>
-            ) {
-                if (response.isSuccessful) {
-                    mldData.value = Resource.Success(response.body()!!)
-                } else {
-                    mldData.value = Resource.Error(response.body()?.message ?: response.message())
-                }
-            }
-        })
-
-        return mldData
+    override suspend fun getTopHeadlinesFromSources(sources: String): Resource<BaseListResponse<Articles>> {
+        val response =  WensAPIClient.getClient().getTopHeadLinesFromSources(sources, apiKey)
+        return setResourceAccordingToResponse(response)
     }
 
 
-    override fun getTopHeadlinesFromCategoryInCountry(
+
+    override suspend fun getTopHeadlinesFromCategory(category: String): Resource<BaseListResponse<Articles>> {
+        val response =  WensAPIClient.getClient().getTopHeadlinesFromCategory(category, apiKey)
+        return setResourceAccordingToResponse(response)
+    }
+
+
+    override suspend fun getTopHeadlinesFromCategoryInCountry(
         category: String,
         country: String
-    ): LiveData<Resource<BaseListResponse<Articles>>> {
-        val mldData = MutableLiveData<Resource<BaseListResponse<Articles>>>()
-        mldData.value = Resource.Loading()
-
-        val call = WensAPIClient.getClient()
-            .getTopHeadlinesFromCountryInCategory(category, country, apiKey)
-        call.enqueue(object : Callback<BaseListResponse<Articles>> {
-
-            override fun onFailure(call: Call<BaseListResponse<Articles>>, t: Throwable) {
-                mldData.value = Resource.Error()
-            }
-
-            override fun onResponse(
-                call: Call<BaseListResponse<Articles>>,
-                response: Response<BaseListResponse<Articles>>
-            ) {
-                if (response.isSuccessful) {
-                    mldData.value = Resource.Success(response.body()!!)
-                } else {
-                    mldData.value = Resource.Error(response.body()?.message ?: response.message())
-                }
-            }
-        })
-
-        return mldData
+    ): Resource<BaseListResponse<Articles>> {
+        val response =  WensAPIClient.getClient().getTopHeadlinesFromCountryInCategory(category,country, apiKey)
+        return setResourceAccordingToResponse(response)
     }
 
-    override fun getTopHeadlinesFromQuery(query: String): LiveData<Resource<BaseListResponse<Articles>>> {
-        val mldData = MutableLiveData<Resource<BaseListResponse<Articles>>>()
-        mldData.value = Resource.Loading()
-
-        val call = WensAPIClient.getClient().getTopHeadlinesFromQuery(query, apiKey)
-        call.enqueue(object : Callback<BaseListResponse<Articles>> {
-
-            override fun onFailure(call: Call<BaseListResponse<Articles>>, t: Throwable) {
-                mldData.value = Resource.Error()
-            }
-
-            override fun onResponse(
-                call: Call<BaseListResponse<Articles>>,
-                response: Response<BaseListResponse<Articles>>
-            ) {
-                if (response.isSuccessful) {
-                    mldData.value = Resource.Success(response.body()!!)
-                } else {
-                    mldData.value = Resource.Error(response.body()?.message ?: response.message())
-                }
-            }
-        })
-
-        return mldData
+    override suspend fun getTopHeadlinesFromQuery(query: String): Resource<BaseListResponse<Articles>> {
+        val response =  WensAPIClient.getClient().getTopHeadlinesFromQuery(query, apiKey)
+        return setResourceAccordingToResponse(response)
     }
 
-    override fun getEverythingFromQuery(query: String): LiveData<Resource<BaseListResponse<Articles>>> {
-        val mldData = MutableLiveData<Resource<BaseListResponse<Articles>>>()
-        mldData.value = Resource.Loading()
-
-        val call = WensAPIClient.getClient().getEverythingByQuery(query, apiKey)
-        call.enqueue(object : Callback<BaseListResponse<Articles>> {
-
-            override fun onFailure(call: Call<BaseListResponse<Articles>>, t: Throwable) {
-                mldData.value = Resource.Error()
-            }
-
-            override fun onResponse(
-                call: Call<BaseListResponse<Articles>>,
-                response: Response<BaseListResponse<Articles>>
-            ) {
-                if (response.isSuccessful) {
-                    mldData.value = Resource.Success(response.body()!!)
-                } else {
-                    mldData.value = Resource.Error(response.body()?.message ?: response.message())
-                }
-            }
-        })
-
-        return mldData
+    override suspend fun getEverythingFromQuery(query: String): Resource<BaseListResponse<Articles>> {
+        val response =  WensAPIClient.getClient().getEverythingByQuery(query, apiKey)
+        return setResourceAccordingToResponse(response)
     }
 
-    override fun getEverythingFromQueryInTitle(queryInTitle: String): MutableLiveData<Resource<BaseListResponse<Articles>>> {
-        val mldData = MutableLiveData<Resource<BaseListResponse<Articles>>>()
-        mldData.value = Resource.Loading()
-
-        val call = WensAPIClient.getClient().getEverythingByQueryInTitle(queryInTitle, apiKey)
-        call.enqueue(object : Callback<BaseListResponse<Articles>> {
-
-            override fun onFailure(call: Call<BaseListResponse<Articles>>, t: Throwable) {
-                mldData.value = Resource.Error()
-            }
-
-            override fun onResponse(
-                call: Call<BaseListResponse<Articles>>,
-                response: Response<BaseListResponse<Articles>>
-            ) {
-                if (response.isSuccessful) {
-                    mldData.value = Resource.Success(response.body()!!)
-                } else {
-                    mldData.value = Resource.Error(response.body()?.message ?: response.message())
-                }
-            }
-        })
-
-        return mldData
+    override suspend fun getEverythingFromQueryInTitle(queryInTitle: String): Resource<BaseListResponse<Articles>> {
+        val response =  WensAPIClient.getClient().getEverythingByQueryInTitle(queryInTitle, apiKey)
+        return setResourceAccordingToResponse(response)
     }
 
-    override fun getEverythingFromQueryAndDate(
+    override suspend fun getEverythingFromQueryAndDate(
         q: String,
         from: String,
         to: String,
         sortBy: String
-    ): MutableLiveData<Resource<BaseListResponse<Articles>>> {
-        val mldData = MutableLiveData<Resource<BaseListResponse<Articles>>>()
-        mldData.value = Resource.Loading()
-
-        val call =
-            WensAPIClient.getClient().getEverythingByQueryAndDate(q, from, to, sortBy, apiKey)
-        call.enqueue(object : Callback<BaseListResponse<Articles>> {
-
-            override fun onFailure(call: Call<BaseListResponse<Articles>>, t: Throwable) {
-                mldData.value = Resource.Error()
-            }
-
-            override fun onResponse(
-                call: Call<BaseListResponse<Articles>>,
-                response: Response<BaseListResponse<Articles>>
-            ) {
-                if (response.isSuccessful) {
-                    mldData.value = Resource.Success(response.body()!!)
-                } else {
-                    mldData.value = Resource.Error(response.body()?.message ?: response.message())
-                }
-            }
-        })
-
-        return mldData
+    ): Resource<BaseListResponse<Articles>> {
+        val response =  WensAPIClient.getClient().getEverythingByQueryAndDate(q,from,to, sortBy, apiKey)
+        return setResourceAccordingToResponse(response)
     }
 
-
+    private fun setResourceAccordingToResponse(response: Response<BaseListResponse<Articles>>) =
+        if (response.isSuccessful) {
+            Resource.Success(response.body()!!)
+        } else {
+            Resource.Error(response.message())
+        }
 }
