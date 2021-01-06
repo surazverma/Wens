@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.wens.BuildConfig
 import com.example.wens.model.objects.Articles
-import com.example.wens.model.objects.Sources
 import com.example.wens.model.responses.BaseListResponse
 import com.example.wens.repository.IWensDataSource
 import com.example.wens.retrofit.WensAPIClient
@@ -15,32 +14,15 @@ import retrofit2.Response
 
 
 object WensRemoteOperation : IWensDataSource {
-    val apiKey = BuildConfig.API_KEY
+    val apiKey = "a68be71781264398a4061a468f462fc9"
 
-    override fun getTopHeadlinesFromCountry(country: String): LiveData<Resource<BaseListResponse<Articles>>> {
-        val mldData = MutableLiveData<Resource<BaseListResponse<Articles>>>()
-        mldData.value = Resource.Loading()
-
-        val call = WensAPIClient.getClient().getTopHeadlinesFromCountry(country, apiKey)
-        call.enqueue(object : Callback<BaseListResponse<Articles>> {
-
-            override fun onFailure(call: Call<BaseListResponse<Articles>>, t: Throwable) {
-                mldData.value = Resource.Error()
-            }
-
-            override fun onResponse(
-                call: Call<BaseListResponse<Articles>>,
-                response: Response<BaseListResponse<Articles>>
-            ) {
-                if (response.isSuccessful) {
-                    mldData.value = Resource.Success(response.body()!!)
-                } else {
-                    mldData.value = Resource.Error(response.body()?.message ?: response.message())
-                }
-            }
-        })
-
-        return mldData
+    override suspend fun getTopHeadlinesFromCountry(country: String): Resource<BaseListResponse<Articles>> {
+        val response =  WensAPIClient.getClient().getTopHeadlinesFromCountry(country, apiKey)
+        return if (response.isSuccessful){
+            Resource.Success(response.body()!!)
+        }else{
+            Resource.Error(response.message())
+        }
     }
 
     override fun getTopHeadlinesFromSources(sources: String): LiveData<Resource<BaseListResponse<Articles>>> {

@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 interface IWensDataSource {
 
-    fun getTopHeadlinesFromCountry(country: String): LiveData<Resource<BaseListResponse<Articles>>>
+    suspend fun getTopHeadlinesFromCountry(country: String): Resource<BaseListResponse<Articles>>
 
     fun getTopHeadlinesFromSources(sources: String): LiveData<Resource<BaseListResponse<Articles>>>
 

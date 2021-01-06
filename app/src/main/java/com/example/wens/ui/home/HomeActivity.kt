@@ -34,11 +34,12 @@ class HomeActivity : AppCompatActivity() {
 
         tvTest = findViewById<TextView>(R.id.testText)
         setObservers()
+        mHomeViewModel.getTopHeadlinesFromC("us")
     }
 
     private fun setObservers() {
-        mHomeViewModel.getTopHeadlinesFromCountry("us")
-            .observe(this, Observer<Resource<BaseListResponse<Articles>>>
+        mHomeViewModel.news
+            .observe(this, Observer<Resource<List<Articles>>>
             {
                 when (it.status) {
                     ResourceState.LOADING -> {
@@ -47,14 +48,13 @@ class HomeActivity : AppCompatActivity() {
                     }
                     ResourceState.SUCCESS -> {
                         showToast("Success")
-                        tvTest.text = it.data?.data?.get(0)?.title ?: "Empty"
+                        tvTest.text = it.data?.get(0)?.title ?: "No Title"
                     }
                     ResourceState.ERROR -> {
                         showToast("Error...")
                         tvTest.text = "Error"
                     }
                 }
-
             })
     }
 

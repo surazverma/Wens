@@ -4,16 +4,17 @@ import com.example.wens.constants.ApiConstants
 import com.example.wens.model.objects.Articles
 import com.example.wens.model.responses.BaseListResponse
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface WensAPIInterface {
     //TOP HEADLINES SECTION
     @GET(ApiConstants.API_HEADER_TOP_HEADLINES)
-    fun getTopHeadlinesFromCountry(
+    suspend fun getTopHeadlinesFromCountry(
         @Query("country") country: String,
         @Query("apiKey") apiKey: String
-    ): Call<BaseListResponse<Articles>>
+    ): Response<BaseListResponse<Articles>>
 
     @GET(ApiConstants.API_HEADER_TOP_HEADLINES)
     fun getTopHeadLinesFromSources(

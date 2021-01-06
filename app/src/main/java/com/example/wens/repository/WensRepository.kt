@@ -9,7 +9,7 @@ import com.example.wens.status.Resource
 class WensRepository(private val wensRemoteSource: IWensDataSource) {
 
 
-    fun getTopHeadlinesFromCountry(country: String): LiveData<Resource<BaseListResponse<Articles>>> {
+    suspend fun getTopHeadlinesFromCountry(country: String): Resource<BaseListResponse<Articles>> {
         return wensRemoteSource.getTopHeadlinesFromCountry(country)
     }
 
