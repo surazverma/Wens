@@ -9,11 +9,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.wens.R
 import com.example.wens.model.objects.Articles
-import com.example.wens.model.responses.BaseListResponse
 import com.example.wens.operation.remote.WensRemoteOperation
 import com.example.wens.repository.WensRepository
-import com.example.wens.status.Resource
-import com.example.wens.status.ResourceState
+import com.example.wens.util.ResultWrapper
 
 class HomeActivity : AppCompatActivity() {
 
@@ -39,20 +37,28 @@ class HomeActivity : AppCompatActivity() {
 
     private fun setObservers() {
         mHomeViewModel.news
-            .observe(this, Observer<Resource<List<Articles>>>
+            .observe(this, Observer<ResultWrapper<List<Articles>>>
             {
-                when (it.status) {
-                    ResourceState.LOADING -> {
+                when (it) {
+                    is ResultWrapper.Loading -> {
                         showToast("Loading....")
                         tvTest.text = "Loading..."
                     }
-                    ResourceState.SUCCESS -> {
+                    is ResultWrapper.Success -> {
                         showToast("Success")
-                        tvTest.text = it.data?.get(0)?.title ?: "No Title"
+                        tvTest.text = it.value[0].title
                     }
-                    ResourceState.ERROR -> {
+                    is ResultWrapper.NetworkError -> {
                         showToast("Error...")
-                        tvTest.text = "Error"
+                        tvTest.text = it.error
+                    }
+                    is ResultWrapper.GenericError -> {
+                        showToast("Error...")
+                        tvTest.text = it.error
+                    }
+                    is ResultWrapper.ServerError -> {
+                        showToast("Error...")
+                        tvTest.text = it.error
                     }
                 }
             })

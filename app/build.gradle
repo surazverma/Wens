@@ -75,4 +75,8 @@ dependencies {
     def coroutines_version = '1.3.9'
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
 
+    //NetworkResponseAdapter
+    def jitpack_version = '4.1.0'
+    implementation "com.github.haroldadmin:NetworkResponseAdapter:$jitpack_version"
+
 }
