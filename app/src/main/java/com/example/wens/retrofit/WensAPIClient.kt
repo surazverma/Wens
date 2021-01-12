@@ -1,6 +1,7 @@
 package com.example.wens.retrofit
 
 import com.example.wens.BuildConfig
+import com.haroldadmin.cnradapter.NetworkResponseAdapterFactory
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -12,6 +13,7 @@ object WensAPIClient {
 
         retrofit = Retrofit.Builder()
             .baseUrl(API_BASE_URL)
+            .addCallAdapterFactory(NetworkResponseAdapterFactory())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 

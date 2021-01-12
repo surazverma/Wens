@@ -1,34 +1,32 @@
 package com.example.wens.repository
 
-import androidx.lifecycle.LiveData
 import com.example.wens.model.objects.Articles
 import com.example.wens.model.responses.BaseListResponse
-import com.example.wens.status.Resource
-import javax.inject.Inject
+import com.example.wens.util.ResultWrapper
 
 interface IWensDataSource {
 
-    fun getTopHeadlinesFromCountry(country: String): LiveData<Resource<BaseListResponse<Articles>>>
+    suspend fun getTopHeadlinesFromCountry(country: String): ResultWrapper<BaseListResponse<Articles>>
 
-    fun getTopHeadlinesFromSources(sources: String): LiveData<Resource<BaseListResponse<Articles>>>
+    suspend fun getTopHeadlinesFromSources(sources: String): ResultWrapper<BaseListResponse<Articles>>
 
-    fun getTopHeadlinesFromCategory(category: String): LiveData<Resource<BaseListResponse<Articles>>>
+    suspend fun getTopHeadlinesFromCategory(category: String): ResultWrapper<BaseListResponse<Articles>>
 
-    fun getTopHeadlinesFromCategoryInCountry(
+    suspend fun getTopHeadlinesFromCategoryInCountry(
         category: String,
         country: String
-    ): LiveData<Resource<BaseListResponse<Articles>>>
+    ): ResultWrapper<BaseListResponse<Articles>>
 
-    fun getTopHeadlinesFromQuery(query: String): LiveData<Resource<BaseListResponse<Articles>>>
+    suspend fun getTopHeadlinesFromQuery(query: String): ResultWrapper<BaseListResponse<Articles>>
 
-    fun getEverythingFromQuery(query: String): LiveData<Resource<BaseListResponse<Articles>>>
+    suspend fun getEverythingFromQuery(query: String): ResultWrapper<BaseListResponse<Articles>>
 
-    fun getEverythingFromQueryInTitle(qInTitle: String): LiveData<Resource<BaseListResponse<Articles>>>
+    suspend fun getEverythingFromQueryInTitle(qInTitle: String): ResultWrapper<BaseListResponse<Articles>>
 
-    fun getEverythingFromQueryAndDate(
+    suspend fun getEverythingFromQueryAndDate(
         q: String,
         from: String,
         to: String,
         sortBy: String
-    ): LiveData<Resource<BaseListResponse<Articles>>>
+    ): ResultWrapper<BaseListResponse<Articles>>
 }
