@@ -5,6 +5,7 @@ plugins {
 
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'dagger.hilt.android.plugin'
 
 def personalPropertiesFile = rootProject.file("personal.properties")
 def personalProperties = new Properties()
@@ -65,11 +66,17 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
+    //ktx - implementation
+    implementation "androidx.fragment:fragment-ktx:1.2.5"
 
-    //DI - Dagger
-    def dagger_version = "2.28.3"
-    implementation "com.google.dagger:dagger:$dagger_version"
-    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+    def hilt_viewModels = "1.0.0-alpha02"
+    implementation "androidx.hilt:hilt-lifecycle-viewmodel:$hilt_viewModels"
+    kapt "androidx.hilt:hilt-compiler:$hilt_viewModels"
+
+    //Dagger Hilt
+    def hilt_version = "2.28-alpha"
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
 
     //coroutines
     def coroutines_version = '1.3.9'
