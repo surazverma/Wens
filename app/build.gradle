@@ -61,6 +61,7 @@ dependencies {
 
     //LiveData
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0"
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
@@ -68,6 +69,12 @@ dependencies {
 
     //ktx - implementation
     implementation "androidx.fragment:fragment-ktx:1.2.5"
+
+    //navigation component.
+    def nav_version = "2.3.2"
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+
 
     def hilt_viewModels = "1.0.0-alpha02"
     implementation "androidx.hilt:hilt-lifecycle-viewmodel:$hilt_viewModels"
