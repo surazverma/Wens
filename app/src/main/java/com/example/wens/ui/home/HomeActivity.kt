@@ -1,36 +1,30 @@
 package com.example.wens.ui.home
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.example.wens.R
 import com.example.wens.model.objects.Articles
-import com.example.wens.operation.remote.WensRemoteOperation
-import com.example.wens.repository.WensRepository
 import com.example.wens.util.ResultWrapper
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {
 
-    lateinit var mHomeViewModel: HomeViewModel
+
     lateinit var tvTest: TextView
-    lateinit var mHomeViewModelFactory: HomeViewModelFactory
+
+    private val  mHomeViewModel : HomeViewModel by viewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-        val repository = WensRepository(WensRemoteOperation)
-        mHomeViewModelFactory = HomeViewModelFactory(repository)
-
-        mHomeViewModel =
-            ViewModelProvider(this, mHomeViewModelFactory).get(HomeViewModel::class.java)
-
-        tvTest = findViewById<TextView>(R.id.testText)
+        tvTest = findViewById(R.id.testText)
         setObservers()
         mHomeViewModel.getTopHeadlinesFromC("us")
     }
@@ -64,13 +58,7 @@ class HomeActivity : AppCompatActivity() {
             })
     }
 
-    private fun setButtonUp() {
-        val button = findViewById<Button>(R.id.testButton)
-        button.setOnClickListener {
 
-        }
-    }
-
-    fun showToast(message: String) = Toast.makeText(this, message, Toast.LENGTH_SHORT)
+    private fun showToast(message: String): Toast = Toast.makeText(this, message, Toast.LENGTH_SHORT)
 
 }

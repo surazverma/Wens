@@ -1,5 +1,6 @@
 package com.example.wens.ui.home
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,14 +9,14 @@ import com.example.wens.repository.WensRepository
 import com.example.wens.util.ResultWrapper
 import kotlinx.coroutines.launch
 
-class HomeViewModel constructor(val wensRepository: WensRepository) : ViewModel() {
+class HomeViewModel @ViewModelInject constructor(val wensRepository: WensRepository) : ViewModel() {
 
     val news = MutableLiveData<ResultWrapper<List<Articles>>>()
 
     fun getTopHeadlinesFromC(country: String) {
         news.value = ResultWrapper.Loading
         viewModelScope.launch {
-            when (val response = wensRepository.getTopHeadlinesFromCountry("us")) {
+            when (val response = wensRepository.getTopHeadlinesFromCountry(country)) {
                 is ResultWrapper.Success -> news.value =
                     ResultWrapper.Success(response.value.data!!)
                 is ResultWrapper.NetworkError -> news.value =

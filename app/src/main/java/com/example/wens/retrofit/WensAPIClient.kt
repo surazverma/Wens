@@ -7,7 +7,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object WensAPIClient {
     var retrofit: Retrofit? = null
-    private val API_BASE_URL = BuildConfig.BASE_URL
+    private const val API_BASE_URL = BuildConfig.BASE_URL
 
     fun getClient(): WensAPIInterface {
 

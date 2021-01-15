@@ -11,7 +11,7 @@ import com.haroldadmin.cnradapter.NetworkResponse
 
 
 object WensRemoteOperation : IWensDataSource {
-    val apiKey = BuildConfig.API_KEY
+    private const val apiKey = BuildConfig.API_KEY
 
     override suspend fun getTopHeadlinesFromCountry(country: String): ResultWrapper<BaseListResponse<Articles>> {
         val response = WensAPIClient.getClient().getTopHeadlinesFromCountry(country, apiKey)
