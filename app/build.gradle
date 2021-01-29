@@ -6,6 +6,7 @@ plugins {
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'dagger.hilt.android.plugin'
+apply plugin: 'androidx.navigation.safeargs.kotlin'
 
 def personalPropertiesFile = rootProject.file("personal.properties")
 def personalProperties = new Properties()
@@ -26,6 +27,12 @@ android {
 
         buildConfigField("String", "API_KEY", personalProperties['API_KEY'])
         buildConfigField("String", "BASE_URL", personalProperties['BASE_URL'])
+    }
+
+    buildFeatures {
+        viewBinding {
+            enabled = true
+        }
     }
 
     buildTypes {

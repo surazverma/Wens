@@ -34,4 +34,28 @@
     </style>
 
 
+    <style name="tv_article_overline_style">
+        <item name="android:fontFamily">@font/frank_ruhl_libre</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textSize">@dimen/feedOverlineTextSize</item>
+        <item name="android:textColor">@color/overline_text_color</item>
+    </style>
+
+    <style name="tv_article_headline_style">
+        <item name="android:fontFamily">@font/playfair_display_bold</item>
+        <item name="android:textSize">@dimen/feedHeadlineTextSize</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/headline_text_color</item>
+    </style>
+
+
+    <style name="tv_article_body_style">
+        <item name="android:fontFamily">@font/arapey</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/text_article_body_color</item>
+        <item name="android:lineSpacingExtra">4dp</item>
+    </style>
+
+
+
 </resources>

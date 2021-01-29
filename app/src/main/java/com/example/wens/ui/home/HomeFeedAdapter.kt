@@ -2,27 +2,33 @@ package com.example.wens.ui.home
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.wens.R
+import com.example.wens.databinding.HomeListItemBinding
 import com.example.wens.model.objects.Articles
 
-class HomeFeedAdapter(val context: Context, var articles: MutableList<Articles>) :
+class HomeFeedAdapter(
+    val context: Context,
+    var articles: MutableList<Articles>,
+    val clickListener: (Articles, HomeListItemBinding) -> Unit
+) :
     RecyclerView.Adapter<HomeFeedAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(context)
-            .inflate(R.layout.home_list_item, parent, false)
+        return ViewHolder(
+            HomeListItemBinding
+                .inflate(
+                    LayoutInflater
+                        .from(context), parent, false
+                )
+        )
 
-        return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(articles[position], context)
+        holder.bind(articles[position], clickListener)
     }
 
     override fun getItemCount(): Int {
@@ -36,27 +42,53 @@ class HomeFeedAdapter(val context: Context, var articles: MutableList<Articles>)
         notifyDataSetChanged()
     }
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val tvTitle: TextView = view.findViewById(R.id.tvArticleTitle)
-        val tvPublicationName: TextView = view.findViewById(R.id.tvPublicationName)
-        val tvArticleBody: TextView = view.findViewById(R.id.tvArticleSnippet)
-        val ivFeedImage: ImageView = view.findViewById(R.id.ivNewsFeedImage)
+    class ViewHolder(val binding: HomeListItemBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(article: Articles, clickListener: (Articles, HomeListItemBinding) -> Unit) {
+            binding.apply {
 
-        fun bind(article: Articles, context: Context) {
-            tvTitle.text = article.title
-            tvArticleBody.text = article.description
-            tvPublicationName.text = article.source.name
-            ivFeedImage.load(article.urlToImage) {
-                placeholder(R.drawable.ic_placeholder_)
-                crossfade(true)
-                crossfade(100)
-                error(R.drawable.ic_placeholder_)
+//                tvArticleSnippet.text = article.description
+//                tvPublicationName.text = article.source?.name
+//                ivNewsFeedImage.load(article.urlToImage) {
+//                    placeholder(R.drawable.ic_placeholder_)
+//                    crossfade(true)
+//                    crossfade(100)
+//                    error(R.drawable.ic_placeholder_)
+//                }
+
+                tvFeedHeadline.apply {
+                    text = article.title
+                    transitionName = article.title
+                }
+
+                tvArticleSnippet.apply {
+                    text = article.description
+                    transitionName = article.description
+                }
+                tvPublicationName.apply {
+                    text = article.source?.name
+                    transitionName = article.source?.name
+                }
+                ivNewsFeedImage.apply {
+                    load(article.urlToImage) {
+                        placeholder(R.drawable.ic_placeholder_)
+                        crossfade(true)
+                        crossfade(100)
+                        error(R.drawable.ic_placeholder_)
+                    }
+                    transitionName = article.urlToImage
+                }
+
             }
 
-//            Glide.with(context)
-//                .load(article.urlToImage)
-//                .placeholder(R.drawable.ic_news_feed_placeholder)
-//                .into(ivFeedImage)
+            itemView.setOnClickListener { clickListener(article, binding) }
         }
+    }
+
+    companion object {
+        const val HEADLINE_TRANSITION_NAME = "article_headline"
+        const val IMAGE_TRANSITION_NAME = "article_image"
+        const val ARTICLE_TRANSITION_NAME = "article_body"
+        const val PUBLICATION_NAME_TRANSITION_NAME = "article_publication"
+
     }
 }

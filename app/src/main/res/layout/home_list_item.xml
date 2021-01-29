@@ -36,7 +36,7 @@
 
 
     <TextView
-        android:id="@+id/tvArticleTitle"
+        android:id="@+id/tvFeedHeadline"
         style="@style/tv_feed_headline_style"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -59,7 +59,7 @@
         android:layout_marginEnd="@dimen/rvMargin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvArticleTitle"
+        app:layout_constraintTop_toBottomOf="@id/tvFeedHeadline"
         tools:text="@tools:sample/lorem/random" />
 
 

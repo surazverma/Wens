@@ -9,20 +9,29 @@
         android:id="@+id/homeFragment"
         android:name="com.example.wens.ui.home.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_articleFragment"
+            app:destination="@id/articleFragment" />
+    </fragment>
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.example.wens.ui.search.SearchFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search" />
     <fragment
-        android:id="@+id/articleFragment"
-        android:name="com.example.wens.ui.article.ArticleFragment"
-        android:label="fragment_article"
-        tools:layout="@layout/fragment_article" />
-    <fragment
         android:id="@+id/bookmarkFragment"
         android:name="com.example.wens.ui.bookmarks.BookmarkFragment"
         android:label="fragment_bookmark"
         tools:layout="@layout/fragment_bookmark" />
+    <fragment
+        android:id="@+id/articleFragment"
+        android:name="com.example.wens.ui.article.ArticleFragment"
+        android:label="fragment_article"
+        tools:layout="@layout/fragment_article">
+        <argument
+            android:name="article"
+            app:argType="com.example.wens.model.objects.Articles" />
+    </fragment>
+
 </navigation>

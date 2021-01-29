@@ -6,8 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.FragmentNavigatorExtras
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.wens.R
+import com.example.wens.databinding.FragmentHomeBinding
+import com.example.wens.databinding.HomeListItemBinding
 import com.example.wens.model.objects.Articles
 import com.example.wens.util.ResultWrapper
 import dagger.hilt.android.AndroidEntryPoint
@@ -19,12 +22,20 @@ class HomeFragment : Fragment() {
     private val mHomeViewModel: HomeViewModel by activityViewModels()
     private lateinit var mHomeFeedAdapter: HomeFeedAdapter
     private val mListOfArticles = mutableListOf<Articles>()
+    private var _binding: FragmentHomeBinding? = null
+    private val mBinding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_home, container, false)
+    ): View {
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        return mBinding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -63,41 +74,59 @@ class HomeFragment : Fragment() {
     }
 
     private fun showError(error: String) {
-
         pbLoader.visibility = View.GONE
         rvHomeFeed.visibility = View.GONE
         tvError.visibility = View.VISIBLE
         tvError.text = error
-
     }
 
 
-    fun hideError() {
-        tvError.visibility(false)
-    }
+//    private fun hideError() {
+//
+//    }
 
     private fun updateRecyclerView(articles: List<Articles>) {
         mHomeFeedAdapter.setData(articles)
     }
 
-    fun setupRecyclerView() {
-        mHomeFeedAdapter = context?.let { HomeFeedAdapter(it, mListOfArticles) }
+    private fun setupRecyclerView() {
+        mHomeFeedAdapter = context?.let {
+            HomeFeedAdapter(it, mListOfArticles) { articles, listItemBinding ->
+                feedItemClickListener(
+                    articles, listItemBinding
+                )
+            }
+        }
             ?: throw Exception("Context Is null")
 
         rvHomeFeed.apply {
             adapter = mHomeFeedAdapter
             layoutManager = LinearLayoutManager(context)
+            postponeEnterTransition()
+            viewTreeObserver.addOnPreDrawListener {
+                startPostponedEnterTransition()
+                true
+            }
         }
     }
 
-    fun View.visibility(value: Boolean) {
+    private fun feedItemClickListener(articles: Articles, binding: HomeListItemBinding) {
+        val action = HomeFragmentDirections.actionHomeFragmentToArticleFragment(articles)
+        val extra = FragmentNavigatorExtras(
+            binding.ivNewsFeedImage to articles.urlToImage!!,
+            binding.tvArticleSnippet to articles.description!!,
+            binding.tvFeedHeadline to articles.title!!,
+            binding.tvPublicationName to articles.source!!.name
+        )
+        findNavController().navigate(action, extra)
 
     }
 
-    private fun refresh() {
-        hideError()
-        mHomeViewModel.getTopHeadlinesFromC("us")
-    }
+
+//    private fun refresh() {
+//        hideError()
+//        mHomeViewModel.getTopHeadlinesFromC("us")
+//    }
 
 }
 

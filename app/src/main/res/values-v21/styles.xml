@@ -19,4 +19,20 @@
         <item name="android:textColor">@color/headline_text_color</item>
         <item name="android:ellipsize">end</item>
     </style>
+
+    <style name="tv_article_overline_style">
+        <item name="android:fontFamily">@font/frank_ruhl_libre</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textSize">@dimen/feedOverlineTextSize</item>
+        <item name="android:letterSpacing">0.18</item>
+        <item name="android:textColor">@color/overline_text_color</item>
+    </style>
+
+    <style name="tv_article_headline_style">
+        <item name="android:fontFamily">@font/playfair_display_bold</item>
+        <item name="android:textSize">@dimen/feedHeadlineTextSize</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0.025</item>
+        <item name="android:textColor">@color/headline_text_color</item>
+    </style>
 </resources>
