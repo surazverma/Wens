@@ -3,10 +3,11 @@ package com.example.wens.repository
 import com.example.wens.model.objects.Articles
 import com.example.wens.model.responses.BaseListResponse
 import com.example.wens.util.ResultWrapper
+import kotlinx.coroutines.flow.Flow
 
 interface IWensDataSource {
 
-    suspend fun getTopHeadlinesFromCountry(country: String): ResultWrapper<BaseListResponse<Articles>>
+    suspend fun getTopHeadlinesFromCountry(country: String): Flow<ResultWrapper<BaseListResponse<Articles>>>
 
     suspend fun getTopHeadlinesFromSources(sources: String): ResultWrapper<BaseListResponse<Articles>>
 

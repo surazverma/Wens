@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.wens.model.objects.Articles
 import com.example.wens.repository.WensRepository
 import com.example.wens.util.ResultWrapper
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class HomeViewModel @ViewModelInject constructor(val wensRepository: WensRepository) : ViewModel() {
@@ -16,15 +17,17 @@ class HomeViewModel @ViewModelInject constructor(val wensRepository: WensReposit
     fun getTopHeadlinesFromC(country: String) {
         news.value = ResultWrapper.Loading
         viewModelScope.launch {
-            when (val response = wensRepository.getTopHeadlinesFromCountry(country)) {
-                is ResultWrapper.Success -> news.value =
-                    ResultWrapper.Success(filterArticleByContent(response.value.data!!))
-                is ResultWrapper.NetworkError -> news.value =
-                    ResultWrapper.NetworkError(response.error)
-                is ResultWrapper.ServerError -> news.value =
-                    ResultWrapper.ServerError(response.code, response.error)
-                is ResultWrapper.GenericError -> news.value =
-                    ResultWrapper.GenericError(response.code, response.error)
+            wensRepository.getTopHeadlinesFromCountry(country).collect {
+                when (it) {
+                    is ResultWrapper.Success -> news.value =
+                        ResultWrapper.Success(filterArticleByContent(it.value.data!!))
+                    is ResultWrapper.NetworkError -> news.value =
+                        ResultWrapper.NetworkError(it.error)
+                    is ResultWrapper.ServerError -> news.value =
+                        ResultWrapper.ServerError(it.code, it.error)
+                    is ResultWrapper.GenericError -> news.value =
+                        ResultWrapper.GenericError(it.code, it.error)
+                }
             }
         }
     }

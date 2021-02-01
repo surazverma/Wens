@@ -8,14 +8,21 @@ import com.example.wens.repository.IWensDataSource
 import com.example.wens.retrofit.WensAPIClient
 import com.example.wens.util.ResultWrapper
 import com.haroldadmin.cnradapter.NetworkResponse
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 
 object WensRemoteOperation : IWensDataSource {
     private const val apiKey = BuildConfig.API_KEY
 
-    override suspend fun getTopHeadlinesFromCountry(country: String): ResultWrapper<BaseListResponse<Articles>> {
-        val response = WensAPIClient.getClient().getTopHeadlinesFromCountry(country, apiKey)
-        return handleResponseResult(response)
+    override suspend fun getTopHeadlinesFromCountry(country: String): Flow<ResultWrapper<BaseListResponse<Articles>>> {
+        return flow {
+            emit(
+                handleResponseResult(
+                    WensAPIClient.getClient().getTopHeadlinesFromCountry(country, apiKey)
+                )
+            )
+        }
     }
 
     override suspend fun getTopHeadlinesFromSources(sources: String): ResultWrapper<BaseListResponse<Articles>> {

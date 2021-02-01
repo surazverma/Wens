@@ -4,13 +4,14 @@ package com.example.wens.repository
 import com.example.wens.model.objects.Articles
 import com.example.wens.model.responses.BaseListResponse
 import com.example.wens.util.ResultWrapper
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 
 class WensRepository @Inject constructor(private val wensRemoteSource: IWensDataSource) {
 
 
-    suspend fun getTopHeadlinesFromCountry(country: String): ResultWrapper<BaseListResponse<Articles>> {
+    suspend fun getTopHeadlinesFromCountry(country: String): Flow<ResultWrapper<BaseListResponse<Articles>>> {
         return wensRemoteSource.getTopHeadlinesFromCountry(country)
     }
 
