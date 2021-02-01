@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:focusable="true"
+    android:background="?attr/selectableItemBackground"
+    android:paddingBottom="16dp">
+
+    <ImageView
+        android:id="@+id/ivNewsFeedImage"
+        android:layout_width="0dp"
+        android:layout_height="180dp"
+        android:layout_marginStart="@dimen/rvMargin"
+        android:layout_marginTop="@dimen/rvMargin"
+        android:layout_marginEnd="@dimen/rvMargin"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvPublicationName"
+        style="@style/tv_feed_overline_style"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/rvMargin"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="@dimen/rvMargin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivNewsFeedImage"
+        tools:text="Times Of India" />
+
+
+    <TextView
+        android:id="@+id/tvFeedHeadline"
+        style="@style/tv_feed_headline_style"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginStart="@dimen/rvMargin"
+        android:layout_marginEnd="@dimen/rvMargin"
+        android:letterSpacing="0.025"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvPublicationName"
+        tools:text="Today is the day for big celebration as the american hero quits the job as the president of the united states of america people" />
+
+    <TextView
+        android:id="@+id/tvArticleSnippet"
+        style="@style/tv_feed_body_style"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/rvMargin"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="@dimen/rvMargin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvFeedHeadline"
+        tools:text="@tools:sample/lorem/random" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

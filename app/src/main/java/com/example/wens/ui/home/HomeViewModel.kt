@@ -18,7 +18,7 @@ class HomeViewModel @ViewModelInject constructor(val wensRepository: WensReposit
         viewModelScope.launch {
             when (val response = wensRepository.getTopHeadlinesFromCountry(country)) {
                 is ResultWrapper.Success -> news.value =
-                    ResultWrapper.Success(response.value.data!!)
+                    ResultWrapper.Success(filterArticleByContent(response.value.data!!))
                 is ResultWrapper.NetworkError -> news.value =
                     ResultWrapper.NetworkError(response.error)
                 is ResultWrapper.ServerError -> news.value =
@@ -27,5 +27,15 @@ class HomeViewModel @ViewModelInject constructor(val wensRepository: WensReposit
                     ResultWrapper.GenericError(response.code, response.error)
             }
         }
+    }
+
+    private fun filterArticleByContent(list: List<Articles>): List<Articles> {
+        val mutableListOfArticles = mutableListOf<Articles>()
+        list.forEach { article ->
+            article.urlToImage?.let {
+                mutableListOfArticles.add(article)
+            }
+        }
+        return mutableListOfArticles
     }
 }

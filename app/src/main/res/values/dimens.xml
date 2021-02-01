@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="rvMargin">16dp</dimen>
+    <dimen name="matchConstraintValue">0dp</dimen>
+
+    <dimen name="feedOverlineTextSize">12sp</dimen>
+    <dimen name="feedHeadlineTextSize">24sp</dimen>
+    <dimen name="feedBodyPreviewTextSize">16sp</dimen>
+</resources>

@@ -7,4 +7,12 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="transparent">#00FFFFFF</color>
+
+
+
+    <color name="overline_text_color">#a4a4a4</color>
+    <color name="headline_text_color">#494949</color>
+    <color name="body_preview_color">#757575</color>
+    <color name="text_article_body_color">#6d6d6d</color>
 </resources>
