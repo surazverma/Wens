@@ -30,14 +30,12 @@ class HomeViewModel @ViewModelInject constructor(val wensRepository: WensReposit
     }
 
     private fun filterArticleByContent(list: List<Articles>): List<Articles> {
-
         val mutableListOfArticles = mutableListOf<Articles>()
         list.forEach { article ->
             article.urlToImage?.let {
                 mutableListOfArticles.add(article)
             }
         }
-
         return mutableListOfArticles
     }
 }

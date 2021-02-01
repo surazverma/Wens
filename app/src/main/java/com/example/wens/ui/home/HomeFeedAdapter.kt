@@ -45,21 +45,10 @@ class HomeFeedAdapter(
     class ViewHolder(val binding: HomeListItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(article: Articles, clickListener: (Articles, HomeListItemBinding) -> Unit) {
             binding.apply {
-
-//                tvArticleSnippet.text = article.description
-//                tvPublicationName.text = article.source?.name
-//                ivNewsFeedImage.load(article.urlToImage) {
-//                    placeholder(R.drawable.ic_placeholder_)
-//                    crossfade(true)
-//                    crossfade(100)
-//                    error(R.drawable.ic_placeholder_)
-//                }
-
                 tvFeedHeadline.apply {
                     text = article.title
                     transitionName = article.title
                 }
-
                 tvArticleSnippet.apply {
                     text = article.description
                     transitionName = article.description
@@ -77,18 +66,8 @@ class HomeFeedAdapter(
                     }
                     transitionName = article.urlToImage
                 }
-
             }
-
             itemView.setOnClickListener { clickListener(article, binding) }
         }
-    }
-
-    companion object {
-        const val HEADLINE_TRANSITION_NAME = "article_headline"
-        const val IMAGE_TRANSITION_NAME = "article_image"
-        const val ARTICLE_TRANSITION_NAME = "article_body"
-        const val PUBLICATION_NAME_TRANSITION_NAME = "article_publication"
-
     }
 }

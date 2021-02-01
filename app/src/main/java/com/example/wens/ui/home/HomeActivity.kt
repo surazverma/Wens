@@ -28,7 +28,6 @@ class HomeActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment)
         mBinding.bottomNav.setupWithNavController(navController)
         mHomeViewModel.getTopHeadlinesFromC("us")
-
     }
 
 }

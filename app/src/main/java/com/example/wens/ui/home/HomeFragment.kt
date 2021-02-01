@@ -80,11 +80,6 @@ class HomeFragment : Fragment() {
         tvError.text = error
     }
 
-
-//    private fun hideError() {
-//
-//    }
-
     private fun updateRecyclerView(articles: List<Articles>) {
         mHomeFeedAdapter.setData(articles)
     }
@@ -121,12 +116,6 @@ class HomeFragment : Fragment() {
         findNavController().navigate(action, extra)
 
     }
-
-
-//    private fun refresh() {
-//        hideError()
-//        mHomeViewModel.getTopHeadlinesFromC("us")
-//    }
 
 }
 
