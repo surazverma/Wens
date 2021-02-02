@@ -35,6 +35,7 @@ class HomeFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        mBinding.rvHomeFeed.adapter = null
         _binding = null
     }
 
@@ -81,19 +82,16 @@ class HomeFragment : Fragment() {
     }
 
     private fun updateRecyclerView(articles: List<Articles>) {
-        mHomeFeedAdapter.setData(articles)
+        mHomeFeedAdapter.submitList(articles)
     }
 
     private fun setupRecyclerView() {
-        mHomeFeedAdapter = context?.let {
-            HomeFeedAdapter(it, mListOfArticles) { articles, listItemBinding ->
-                feedItemClickListener(
-                    articles, listItemBinding
-                )
-            }
+        mHomeFeedAdapter = HomeFeedAdapter { articles, listItemBinding ->
+            feedItemClickListener(
+                articles,
+                listItemBinding
+            )
         }
-            ?: throw Exception("Context Is null")
-
         rvHomeFeed.apply {
             adapter = mHomeFeedAdapter
             layoutManager = LinearLayoutManager(context)

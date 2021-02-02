@@ -1,8 +1,8 @@
 package com.example.wens.ui.home
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.wens.R
@@ -10,36 +10,24 @@ import com.example.wens.databinding.HomeListItemBinding
 import com.example.wens.model.objects.Articles
 
 class HomeFeedAdapter(
-    val context: Context,
-    var articles: MutableList<Articles>,
     val clickListener: (Articles, HomeListItemBinding) -> Unit
 ) :
-    RecyclerView.Adapter<HomeFeedAdapter.ViewHolder>() {
+    ListAdapter<Articles, HomeFeedAdapter.ViewHolder>(HomeDiffUtilCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
             HomeListItemBinding
                 .inflate(
                     LayoutInflater
-                        .from(context), parent, false
+                        .from(parent.context), parent, false
                 )
         )
-
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(articles[position], clickListener)
-    }
-
-    override fun getItemCount(): Int {
-        return articles.size
-    }
-
-    fun setData(refreshedList: List<Articles>) {
-        refreshedList.forEach {
-            articles.add(it)
+        getItem(position).let {
+            holder.bind(it, clickListener)
         }
-        notifyDataSetChanged()
     }
 
     class ViewHolder(val binding: HomeListItemBinding) : RecyclerView.ViewHolder(binding.root) {
