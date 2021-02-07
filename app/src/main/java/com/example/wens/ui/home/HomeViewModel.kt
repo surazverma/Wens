@@ -4,6 +4,7 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.cachedIn
 import com.example.wens.model.objects.Articles
 import com.example.wens.repository.WensRepository
 import com.example.wens.util.ResultWrapper
@@ -41,4 +42,6 @@ class HomeViewModel @ViewModelInject constructor(val wensRepository: WensReposit
         }
         return mutableListOfArticles
     }
+
+    val pagingNews = wensRepository.getTopHeadlineCountryStream("us").cachedIn(viewModelScope)
 }

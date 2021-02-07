@@ -8,11 +8,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.wens.databinding.FragmentHomeBinding
 import com.example.wens.databinding.HomeListItemBinding
 import com.example.wens.model.objects.Articles
-import com.example.wens.util.ResultWrapper
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_home.*
 
@@ -46,20 +46,24 @@ class HomeFragment : Fragment() {
     }
 
     private fun setObservers() {
-        mHomeViewModel.news.observe(viewLifecycleOwner, {
-            when (it) {
-                ResultWrapper.Loading -> {
-                    viewVisibilityHandler(true)
-                }
-                is ResultWrapper.Success -> {
-                    viewVisibilityHandler(false)
-                    updateRecyclerView(it.value)
-                }
-                is ResultWrapper.GenericError -> showError("Something Went Wrong")
-                is ResultWrapper.NetworkError -> showError("Network Issue")
-                is ResultWrapper.ServerError -> showError("Server Issue")
-            }
+        mHomeViewModel.pagingNews.observe(viewLifecycleOwner, {
+            viewVisibilityHandler(false)
+            updateRecyclerView(it)
         })
+//        mHomeViewModel.news.observe(viewLifecycleOwner, {
+//            when (it) {
+//                ResultWrapper.Loading -> {
+//                    viewVisibilityHandler(true)
+//                }
+//                is ResultWrapper.Success -> {
+//                    viewVisibilityHandler(false)
+//                    updateRecyclerView(it.value)
+//                }
+//                is ResultWrapper.GenericError -> showError("Something Went Wrong")
+//                is ResultWrapper.NetworkError -> showError("Network Issue")
+//                is ResultWrapper.ServerError -> showError("Server Issue")
+//            }
+//        })
     }
 
     private fun viewVisibilityHandler(isLoading: Boolean) {
@@ -81,8 +85,8 @@ class HomeFragment : Fragment() {
         tvError.text = error
     }
 
-    private fun updateRecyclerView(articles: List<Articles>) {
-        mHomeFeedAdapter.submitList(articles)
+    private fun updateRecyclerView(articles: PagingData<Articles>) {
+        mHomeFeedAdapter.submitData(viewLifecycleOwner.lifecycle, articles)
     }
 
     private fun setupRecyclerView() {

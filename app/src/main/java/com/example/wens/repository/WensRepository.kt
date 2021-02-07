@@ -3,6 +3,7 @@ package com.example.wens.repository
 
 import com.example.wens.model.objects.Articles
 import com.example.wens.model.responses.BaseListResponse
+import com.example.wens.operation.remote.WensRemoteOperation
 import com.example.wens.util.ResultWrapper
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -14,6 +15,9 @@ class WensRepository @Inject constructor(private val wensRemoteSource: IWensData
     suspend fun getTopHeadlinesFromCountry(country: String): Flow<ResultWrapper<BaseListResponse<Articles>>> {
         return wensRemoteSource.getTopHeadlinesFromCountry(country)
     }
+
+    fun getTopHeadlineCountryStream(country: String) =
+        WensRemoteOperation.getTopHeadlineFromCountryStream(country)
 
     suspend fun getTopHeadlinesFromSources(sources: String): ResultWrapper<BaseListResponse<Articles>> {
         return wensRemoteSource.getTopHeadlinesFromSources(sources)

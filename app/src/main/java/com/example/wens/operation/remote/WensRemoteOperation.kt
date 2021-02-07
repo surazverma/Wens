@@ -1,9 +1,13 @@
 package com.example.wens.operation.remote
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.liveData
 import com.example.wens.BuildConfig
 import com.example.wens.model.objects.Articles
 import com.example.wens.model.responses.BaseListResponse
 import com.example.wens.model.responses.ErrorResponse
+import com.example.wens.pagination.WensPagingSource
 import com.example.wens.repository.IWensDataSource
 import com.example.wens.retrofit.WensAPIClient
 import com.example.wens.util.ResultWrapper
@@ -17,13 +21,18 @@ object WensRemoteOperation : IWensDataSource {
 
     override suspend fun getTopHeadlinesFromCountry(country: String): Flow<ResultWrapper<BaseListResponse<Articles>>> {
         return flow {
-            emit(
-                handleResponseResult(
-                    WensAPIClient.getClient().getTopHeadlinesFromCountry(country, apiKey)
-                )
-            )
+//            emit(
+////                handleResponseResult(
+//////                    WensAPIClient.getClient().getTopHeadlinesFromCountry(country, apiKey, 1)
+////                )
+//            )
         }
     }
+
+    fun getTopHeadlineFromCountryStream(country: String) = Pager(
+        config = PagingConfig(pageSize = 20, maxSize = 60, enablePlaceholders = false),
+        pagingSourceFactory = { WensPagingSource(WensAPIClient.getClient(), country) }
+    ).liveData
 
     override suspend fun getTopHeadlinesFromSources(sources: String): ResultWrapper<BaseListResponse<Articles>> {
         val response = WensAPIClient.getClient().getTopHeadLinesFromSources(sources, apiKey)

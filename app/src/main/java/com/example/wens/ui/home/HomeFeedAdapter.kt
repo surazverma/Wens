@@ -2,7 +2,7 @@ package com.example.wens.ui.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.ListAdapter
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.wens.R
@@ -12,7 +12,7 @@ import com.example.wens.model.objects.Articles
 class HomeFeedAdapter(
     val clickListener: (Articles, HomeListItemBinding) -> Unit
 ) :
-    ListAdapter<Articles, HomeFeedAdapter.ViewHolder>(HomeDiffUtilCallback) {
+    PagingDataAdapter<Articles, HomeFeedAdapter.ViewHolder>(HomeDiffUtilCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -25,7 +25,7 @@ class HomeFeedAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        getItem(position).let {
+        getItem(position)?.let {
             holder.bind(it, clickListener)
         }
     }

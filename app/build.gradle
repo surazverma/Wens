@@ -88,6 +88,10 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
+    //pagination
+    def paging_version = "3.0.0-alpha11"
+
+    implementation "androidx.paging:paging-runtime-ktx:$paging_version"
 
     def hilt_viewModels = "1.0.0-alpha02"
     implementation "androidx.hilt:hilt-lifecycle-viewmodel:$hilt_viewModels"
