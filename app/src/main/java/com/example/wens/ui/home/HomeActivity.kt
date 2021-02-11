@@ -13,8 +13,8 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {
 
-    private val  mHomeViewModel : HomeViewModel by viewModels()
-    lateinit var mBinding : ActivityHomeBinding
+    private val mHomeViewModel: HomeViewModel by viewModels()
+    lateinit var mBinding: ActivityHomeBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +27,7 @@ class HomeActivity : AppCompatActivity() {
     private fun setupViews() {
         val navController = findNavController(R.id.nav_host_fragment)
         mBinding.bottomNav.setupWithNavController(navController)
-        mHomeViewModel.getTopHeadlinesFromC("us")
+        mHomeViewModel.getTopStreamHeadlinesFromCountry("us")
     }
 
 }

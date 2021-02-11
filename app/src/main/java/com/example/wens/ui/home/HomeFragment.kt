@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.paging.PagingData
@@ -15,13 +16,14 @@ import com.example.wens.databinding.HomeListItemBinding
 import com.example.wens.model.objects.Articles
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
 
     private val mHomeViewModel: HomeViewModel by activityViewModels()
     private lateinit var mHomeFeedAdapter: HomeFeedAdapter
-    private val mListOfArticles = mutableListOf<Articles>()
     private var _binding: FragmentHomeBinding? = null
     private val mBinding get() = _binding!!
 
@@ -46,24 +48,11 @@ class HomeFragment : Fragment() {
     }
 
     private fun setObservers() {
-        mHomeViewModel.pagingNews.observe(viewLifecycleOwner, {
-            viewVisibilityHandler(false)
-            updateRecyclerView(it)
-        })
-//        mHomeViewModel.news.observe(viewLifecycleOwner, {
-//            when (it) {
-//                ResultWrapper.Loading -> {
-//                    viewVisibilityHandler(true)
-//                }
-//                is ResultWrapper.Success -> {
-//                    viewVisibilityHandler(false)
-//                    updateRecyclerView(it.value)
-//                }
-//                is ResultWrapper.GenericError -> showError("Something Went Wrong")
-//                is ResultWrapper.NetworkError -> showError("Network Issue")
-//                is ResultWrapper.ServerError -> showError("Server Issue")
-//            }
-//        })
+        viewLifecycleOwner.lifecycleScope.launch {
+            mHomeViewModel.pagingNews.collectLatest {
+                mHomeFeedAdapter.submitData(it)
+            }
+        }
     }
 
     private fun viewVisibilityHandler(isLoading: Boolean) {

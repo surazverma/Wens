@@ -2,7 +2,7 @@ package com.example.wens.operation.remote
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
-import androidx.paging.liveData
+import androidx.paging.PagingData
 import com.example.wens.BuildConfig
 import com.example.wens.model.objects.Articles
 import com.example.wens.model.responses.BaseListResponse
@@ -13,26 +13,15 @@ import com.example.wens.retrofit.WensAPIClient
 import com.example.wens.util.ResultWrapper
 import com.haroldadmin.cnradapter.NetworkResponse
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 
 
 object WensRemoteOperation : IWensDataSource {
     private const val apiKey = BuildConfig.API_KEY
 
-    override suspend fun getTopHeadlinesFromCountry(country: String): Flow<ResultWrapper<BaseListResponse<Articles>>> {
-        return flow {
-//            emit(
-////                handleResponseResult(
-//////                    WensAPIClient.getClient().getTopHeadlinesFromCountry(country, apiKey, 1)
-////                )
-//            )
-        }
-    }
-
-    fun getTopHeadlineFromCountryStream(country: String) = Pager(
-        config = PagingConfig(pageSize = 20, maxSize = 60, enablePlaceholders = false),
+    override suspend fun getTopHeadlinesStreamFromCountry(country: String): Flow<PagingData<Articles>> = Pager(
+        config = PagingConfig(pageSize = 2, maxSize = 10, enablePlaceholders = false),
         pagingSourceFactory = { WensPagingSource(WensAPIClient.getClient(), country) }
-    ).liveData
+    ).flow
 
     override suspend fun getTopHeadlinesFromSources(sources: String): ResultWrapper<BaseListResponse<Articles>> {
         val response = WensAPIClient.getClient().getTopHeadLinesFromSources(sources, apiKey)

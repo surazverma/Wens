@@ -24,7 +24,7 @@ class WensPagingSource(
             LoadResult.Page(
                 data = articles!!,
                 prevKey = if (position == WENS_STARTING_PAGE_CONSTANT) null else position - 1,
-                nextKey = position + 1
+                nextKey = if (articles.isEmpty()) null else position + 1
             )
         } catch (e: IOException) {
             LoadResult.Error(e)
