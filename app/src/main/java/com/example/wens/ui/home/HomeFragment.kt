@@ -4,12 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
-import androidx.paging.PagingData
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.wens.databinding.FragmentHomeBinding
 import com.example.wens.databinding.HomeListItemBinding
@@ -35,6 +36,25 @@ class HomeFragment : Fragment() {
         return mBinding.root
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+    }
+
+    private fun handleTheWindow() {
+        activity?.window?.setDecorFitsSystemWindows(true)
+        val controller = view?.windowInsetsController
+        controller?.setSystemBarsAppearance(
+            APPEARANCE_LIGHT_STATUS_BARS,
+            APPEARANCE_LIGHT_STATUS_BARS
+        )
+    }
+
+    override fun onStart() {
+        super.onStart()
+        handleTheWindow()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         mBinding.rvHomeFeed.adapter = null
@@ -43,6 +63,7 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        handleTheWindow()
         setupRecyclerView()
         setObservers()
     }
@@ -74,10 +95,6 @@ class HomeFragment : Fragment() {
         tvError.text = error
     }
 
-    private fun updateRecyclerView(articles: PagingData<Articles>) {
-        mHomeFeedAdapter.submitData(viewLifecycleOwner.lifecycle, articles)
-    }
-
     private fun setupRecyclerView() {
         mHomeFeedAdapter = HomeFeedAdapter { articles, listItemBinding ->
             feedItemClickListener(
@@ -94,6 +111,33 @@ class HomeFragment : Fragment() {
                 true
             }
         }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            mHomeFeedAdapter.loadStateFlow.collectLatest {
+                when (it.refresh) {
+                    is LoadState.Loading -> {
+                        viewVisibilityHandler(true)
+                    }
+                    is LoadState.NotLoading -> {
+                        viewVisibilityHandler(false)
+                    }
+                    is LoadState.Error -> {
+                        viewVisibilityHandler(false)
+                        val errorState = it.source.append as? LoadState.Error
+                            ?: it.source.prepend as? LoadState.Error
+                            ?: it.append as? LoadState.Error
+                            ?: it.prepend as? LoadState.Error
+
+                        errorState?.let { error ->
+                            showError(error.error.localizedMessage!!)
+                        } ?: showError("Something Went Wrong") // TODO: 16/2/21 handle it properly
+                    }
+                }
+            }
+        }
+
+
+
     }
 
     private fun feedItemClickListener(articles: Articles, binding: HomeListItemBinding) {

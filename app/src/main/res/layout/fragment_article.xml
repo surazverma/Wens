@@ -14,8 +14,9 @@
         <ImageView
             android:id="@+id/ivArticleImage"
             android:layout_width="0dp"
-            android:layout_height="350dp"
+            android:layout_height="420dp"
             android:scaleType="centerCrop"
+            android:foreground="@drawable/top_scrim_drawable"
             android:transitionName="transitionArticleImage"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

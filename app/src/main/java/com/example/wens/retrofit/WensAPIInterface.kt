@@ -5,7 +5,6 @@ import com.example.wens.model.objects.Articles
 import com.example.wens.model.responses.BaseListResponse
 import com.example.wens.model.responses.ErrorResponse
 import com.haroldadmin.cnradapter.NetworkResponse
-import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -16,7 +15,7 @@ interface WensAPIInterface {
         @Query("country") country: String,
         @Query("apiKey") apiKey: String,
         @Query("page") page: Int,
-    ): Response<BaseListResponse<Articles>>
+    ): NetworkResponse<BaseListResponse<Articles>,ErrorResponse>
 
     @GET(ApiConstants.API_HEADER_TOP_HEADLINES)
     suspend fun getTopHeadLinesFromSources(

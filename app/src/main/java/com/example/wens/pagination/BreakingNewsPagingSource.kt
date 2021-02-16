@@ -4,8 +4,7 @@ import androidx.paging.PagingSource
 import com.example.wens.BuildConfig
 import com.example.wens.model.objects.Articles
 import com.example.wens.retrofit.WensAPIInterface
-import retrofit2.HttpException
-import java.io.IOException
+import com.haroldadmin.cnradapter.NetworkResponse
 
 const val WENS_STARTING_PAGE_CONSTANT = 1
 
@@ -18,18 +17,27 @@ class WensPagingSource(
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Articles> {
         val position = params.key ?: WENS_STARTING_PAGE_CONSTANT
-        val response = wensAPIInterface.getTopHeadlinesFromCountry(country, APIKEY, position)
-        return try {
-            val articles = response.body()?.data
-            LoadResult.Page(
-                data = articles!!,
-                prevKey = if (position == WENS_STARTING_PAGE_CONSTANT) null else position - 1,
-                nextKey = if (articles.isEmpty()) null else position + 1
-            )
-        } catch (e: IOException) {
-            LoadResult.Error(e)
-        } catch (e: HttpException) {
-            LoadResult.Error(e)
+        val networkResponse = wensAPIInterface.getTopHeadlinesFromCountry(country, APIKEY, position)
+        when (networkResponse) {
+            is NetworkResponse.Success -> {
+                val articles = networkResponse.body.data
+                return LoadResult.Page(
+                    data = if (!articles.isNullOrEmpty()) articles else listOf(),
+                    prevKey = if (position == WENS_STARTING_PAGE_CONSTANT) null else position - 1,
+                    nextKey = if (articles.isNullOrEmpty()) null else position + 1
+                )
+            }
+            is NetworkResponse.ServerError -> {
+                return LoadResult.Page(
+                    data = listOf(),
+                    prevKey = null,
+                    nextKey = null
+                )
+            }
+            is NetworkResponse.NetworkError -> return LoadResult.Error(networkResponse.error) // TODO: 16/2/21 create an exception for server which is thrown to detect that there is a server error.
+            is NetworkResponse.UnknownError -> return LoadResult.Error(networkResponse.error)
         }
     }
+
+
 }
